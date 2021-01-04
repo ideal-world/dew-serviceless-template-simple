@@ -2,15 +2,12 @@ const gulp = require('gulp');
 const path = require('path');
 const babelify = require('babelify');
 const browserify = require('browserify');
-    // 转成stream流，gulp系
 const source = require('vinyl-source-stream');
-    // 转成二进制流，gulp系
 const buffer = require('vinyl-buffer');
 const { series, parallel } = require('gulp');
 const rm = require('rimraf');
 const concat = require('gulp-concat');
 const sass = require('gulp-sass');
-const cheerio = require('gulp-cheerio');
 const uglify = require('gulp-uglify');
 const cssmin = require('gulp-cssmin');
 const minifyHtml = require('gulp-minify-html');
@@ -43,6 +40,15 @@ const clean = (done) => {
   });
 };
 
+const _lint = () => {
+  return gulp.src(_path.lint_js)
+    .pipe(eslint({
+      useEslintrc: true
+    }))
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError());
+};
+
 const _css = () => {
   return gulp.src(_path.scss)
     .pipe(sourcemaps.init())
@@ -55,21 +61,12 @@ const _css = () => {
     .pipe(gulpif(isDev, connect.reload()));
 };
 
-const _lint = () => {
-  return gulp.src(_path.lint_js)
-    .pipe(eslint({
-      useEslintrc: true
-    }))
-    .pipe(eslint.format())
-    .pipe(eslint.failAfterError());
-};
-
 const _script = () => {
   return browserify({
       entries: _path.main_js,
-      debug: isDev, // 生成inline-sourcemap
+      debug: isDev,
       extensions: ['.js', '.jsx', 'tsx', '.json'],
-      paths: ['./src/'], // 是目录的数组，当查找未使用相对路径引用的模块时，浏览器会搜索这些目录。可以是绝对的，也可以是相对的basedir。等效于NODE_PATH调用browserify命令时设置环境变量。
+      paths: ['./src/'],
     }).plugin(tsify)
     .transform(babelify, {
       presets: ['@babel/preset-env', '@babel/preset-react'],
@@ -91,12 +88,6 @@ const _script = () => {
 
 const _html = () => {
   return gulp.src(_path.html)
-  .pipe(cheerio(($ => {
-    $('script').remove();
-    $('link').remove();
-    $('body').append(`<script src="./js/app${isDev ? '' : '.min'}.js"></script>`);
-    $('head').append(`<link rel="stylesheet" href="./css/app${isDev ? '' : '.min'}.css">`);
-  })))
   .pipe(gulpif(isProd, minifyHtml({
     empty: true,
     spare: true
@@ -105,7 +96,7 @@ const _html = () => {
   .pipe(gulpif(isDev, connect.reload()));
 };
 
-const _rev = () => {
+const _version = () => {
   return gulp.src('./dist/*.html')
     .pipe(resversion({
       rootdir: './dist/',
@@ -129,6 +120,6 @@ const _watch = () => {
 };
 
 module.exports = {
-  build: series(clean, parallel(_script, _css, _html), _rev),
-  dev: series(clean, _lint, parallel(_script, _css, _html), _rev, parallel(_server, _watch))
+  build: series(clean, parallel(_script, _css, _html), _version),
+  dev: series(clean, _lint, parallel(_script, _css, _html), _version, parallel(_server, _watch))
 };
