@@ -1,10 +1,18 @@
-.textColor {
-  color: red; }
+#user-info {
+  margin: 10px; }
 
-.countText {
-  font-size: 14px;
-  font-family: Arial, Helvetica, sans-serif;
-  font-weight: 400;
-  color: red; }
+.item {
+  margin: 10px; }
+  .item-ul {
+    border-top: 1px gray solid; }
+  .item-li {
+    margin: 5px 0;
+    list-style-type: none; }
+    .item-li-info {
+      margin-left: 5px;
+      color: gray; }
+    .item-li-action {
+      margin-left: 5px;
+      color: gray; }
 
 /*# sourceMappingURL=app.css.map */

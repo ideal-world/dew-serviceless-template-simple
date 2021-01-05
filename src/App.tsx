@@ -1,5 +1,5 @@
 import React from 'react'
 import { render } from 'react-dom'
-import Test from 'components/Test/index'
+import Todo from './pages/todo/index'
 
-render(<Test />, document.getElementById("app"))
+render(<Todo />, document.getElementById("app"))

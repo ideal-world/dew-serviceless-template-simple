@@ -30321,17 +30321,67 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(require("react"));
 const react_dom_1 = require("react-dom");
-const index_1 = __importDefault(require("components/Test/index"));
+const index_1 = __importDefault(require("./pages/todo/index"));
 react_dom_1.render(react_1.default.createElement(index_1.default, null), document.getElementById("app"));
-},{"components/Test/index":18,"react":8,"react-dom":5}],16:[function(require,module,exports){
+},{"./pages/todo/index":18,"react":8,"react-dom":5}],16:[function(require,module,exports){
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const react_1 = __importDefault(require("react"));
-const Child = (props) => react_1.default.createElement("div", { className: "textColor" }, props.msg);
-exports.default = Child;
+const react_1 = __importStar(require("react"));
+const Item = (props) => {
+    const [items, setItems] = react_1.useState([]);
+    const [content, setContent] = react_1.useState('');
+    react_1.useEffect(() => {
+        setItems([{
+                id: 0,
+                content: '测试测试测试测试',
+                createUserName: 'jzy',
+                createUserId: '1'
+            }, {
+                id: 0,
+                content: '测试测试测试测试',
+                createUserName: 'jzy',
+                createUserId: '1'
+            }]);
+    }, []);
+    function deleteItem(itemId) {
+        alert(itemId);
+    }
+    function addItem() {
+        setContent('');
+    }
+    return (react_1.default.createElement("div", { className: 'item' },
+        react_1.default.createElement("ul", { className: 'item-ul' }, items.map(item => react_1.default.createElement("li", { className: 'item-li', key: item.id },
+            react_1.default.createElement("b", { className: 'item-li-content' }, item.content),
+            react_1.default.createElement("b", { className: 'item-li-info' }, item.createUserName),
+            props.loginUserId != null && props.loginUserId == item.createUserId ?
+                react_1.default.createElement("button", { className: 'item-li-action', onClick: deleteItem.bind(this, item.id) }, "[\u5220\u9664]")
+                :
+                    ''))),
+        react_1.default.createElement("div", { className: 'item-add' },
+            react_1.default.createElement("input", { value: content, onChange: event => setContent(event.target.value) }),
+            "\u00A0",
+            react_1.default.createElement("button", { onClick: addItem }, "ADD"))));
+};
+exports.default = Item;
 },{"react":8}],17:[function(require,module,exports){
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
@@ -30355,17 +30405,31 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
-const Count = () => {
-    const [count, setCount] = react_1.useState(0);
-    const [msg] = react_1.useState("显示一个计数器!");
-    return (react_1.default.createElement("div", null,
-        react_1.default.createElement("p", { className: "countText" }, msg),
+const User = () => {
+    const [userInfo, setUserInfo] = react_1.useState(null);
+    const [userName, setUserName] = react_1.useState("");
+    const [password, setPassword] = react_1.useState("");
+    function login() {
+        alert("");
+    }
+    function logout() {
+        alert("");
+    }
+    return (react_1.default.createElement("div", { id: 'user-info' }, userInfo != null ?
         react_1.default.createElement("div", null,
-            react_1.default.createElement("button", { onClick: () => { setCount(count - 1); } }, "-"),
-            react_1.default.createElement("span", null, count),
-            react_1.default.createElement("button", { onClick: () => { setCount(count + 1); } }, "+"))));
+            "Hi,",
+            userInfo.userName,
+            react_1.default.createElement("button", { onClick: logout }, "Logout"))
+        :
+            react_1.default.createElement("div", null,
+                "User Name: ",
+                react_1.default.createElement("input", { value: userName, onChange: event => setUserName(event.target.value) }),
+                "\u00A0Password: ",
+                react_1.default.createElement("input", { value: password, onChange: event => setPassword(event.target.value) }),
+                "\u00A0",
+                react_1.default.createElement("button", { onClick: login }, "Login"))));
 };
-exports.default = Count;
+exports.default = User;
 },{"react":8}],18:[function(require,module,exports){
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
@@ -30373,22 +30437,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(require("react"));
-const index_1 = __importDefault(require("components/Child/index"));
-const index_2 = __importDefault(require("components/Count/index"));
-class Test extends react_1.default.Component {
-    constructor() {
-        super(...arguments);
-        this.state = {
-            msg: 'hello, world!!!'
-        };
-    }
-    render() {
-        const { msg } = this.state;
-        return (react_1.default.createElement(react_1.default.Fragment, null,
-            react_1.default.createElement(index_1.default, { msg: msg }),
-            react_1.default.createElement(index_2.default, null)));
-    }
-}
-exports.default = Test;
-},{"components/Child/index":16,"components/Count/index":17,"react":8}]},{},[1])
+const User_1 = __importDefault(require("components/User"));
+const Item_1 = __importDefault(require("components/Item"));
+const ToDo = () => {
+    return (react_1.default.createElement(react_1.default.Fragment, null,
+        react_1.default.createElement("h2", null, "Todo Demo"),
+        react_1.default.createElement(User_1.default, null),
+        react_1.default.createElement(Item_1.default, { loginUserId: '' })));
+};
+exports.default = ToDo;
+},{"components/Item":16,"components/User":17,"react":8}]},{},[1])
 //# sourceMappingURL=app.js.map

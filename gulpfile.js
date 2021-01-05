@@ -7,6 +7,7 @@ const buffer = require('vinyl-buffer');
 const { series, parallel } = require('gulp');
 const rm = require('rimraf');
 const concat = require('gulp-concat');
+const cheerio = require('gulp-cheerio');
 const sass = require('gulp-sass');
 const uglify = require('gulp-uglify');
 const cssmin = require('gulp-cssmin');
@@ -88,6 +89,12 @@ const _script = () => {
 
 const _html = () => {
   return gulp.src(_path.html)
+  .pipe(cheerio(($ => {
+    $('script').remove();
+    $('link').remove();
+    $('body').append(`<script src="./js/app${isDev ? '' : '.min'}.js"></script>`);
+    $('head').append(`<link rel="stylesheet" href="./css/app${isDev ? '' : '.min'}.css">`);
+  })))
   .pipe(gulpif(isProd, minifyHtml({
     empty: true,
     spare: true
