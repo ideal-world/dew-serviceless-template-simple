@@ -1,31 +1,29 @@
 import React, {useState} from 'react'
+import {IdentOptInfo} from "@idealworld/sdk/dist/domain/IdentOptInfo";
+import {DewSDK} from "@idealworld/sdk";
 
-type UserInfoDTO = {
-    token: string,
-    userName: string,
-    roleName: string,
-    userId: string
-}
 
 const User = () => {
 
-    const [userInfo, setUserInfo] = useState<UserInfoDTO | null>(null);
+    const [userInfo, setUserInfo] = useState<IdentOptInfo | null>(null);
     const [userName, setUserName] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
-    function login(): void {
-        alert("")
+    async function login(): Promise<void> {
+        const info = await DewSDK.iam.account.login(userName, password)
+        setUserInfo(info)
     }
 
-    function logout(): void {
-        alert("")
+    async function logout(): Promise<void> {
+        await DewSDK.iam.account.logout()
+        setUserInfo(null)
     }
 
     return (
         <div id='user-info'>
             {
                 userInfo != null ?
-                    <div>Hi,{userInfo.userName}
+                    <div>Hi,{userInfo.accountName}
                         <button onClick={logout}>Logout</button>
                     </div>
                     :

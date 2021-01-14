@@ -1,11 +1,7 @@
 import React, {useEffect, useState} from 'react'
-
-type ItemDTO = {
-    id: number,
-    content: string
-    createUserName: string
-    createUserId: string
-}
+import * as TodoAction1 from "../../actions/TodoAction1";
+import {ItemDTO} from "../../actions/TodoAction1";
+import * as TodoAction2 from "../../actions/TodoAction2";
 
 type Props = {
     loginUserId: string
@@ -18,24 +14,24 @@ const Item = (props: Props) => {
 
     useEffect(() => {
         setItems([{
-            id:0,
+            id: 0,
             content: '测试测试测试测试',
-            createUserName:'jzy',
+            createUserName: 'jzy',
             createUserId: '1'
-        },{
-            id:0,
+        }, {
+            id: 0,
             content: '测试测试测试测试',
-            createUserName:'jzy',
+            createUserName: 'jzy',
             createUserId: '1'
         }])
     }, [])
 
     function deleteItem(itemId: number): void {
-        alert(itemId)
+        TodoAction2.removeItem(itemId)
     }
 
     function addItem(): void {
-        setContent('')
+        TodoAction1.addItem(content)
     }
 
     return (
@@ -57,7 +53,8 @@ const Item = (props: Props) => {
             </ul>
             <div className='item-add'>
                 <input value={content} onChange={event => setContent(event.target.value)}/>
-                &nbsp;<button onClick={addItem}>ADD</button>
+                &nbsp;
+                <button onClick={addItem}>ADD</button>
             </div>
         </div>
     )

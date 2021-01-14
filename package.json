@@ -11,12 +11,14 @@
     "build": "cross-env NODE_ENV=prod gulp build"
   },
   "dependencies": {
+    "@idealworld/sdk": "^0.1.17",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "typescript": "^4.0.2",
     "cross-env": "^7.0.3"
   },
   "devDependencies": {
+    "@idealworld/plugin-gulp": "^0.1.17",
+    "typescript": "^4.0.2",
     "@babel/core": "^7.12.10",
     "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@babel/plugin-proposal-decorators": "^7.12.12",
@@ -30,7 +32,6 @@
     "@typescript-eslint/parser": "^4.11.1",
     "babel-eslint": "^10.1.0",
     "babelify": "^10.0.0",
-    "browserify": "^17.0.0",
     "eslint": "^7.17.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
@@ -40,6 +41,7 @@
     "exorcist": "^1.0.1",
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
+    "gulp-uglify-es": "^2.0.0",
     "gulp-cheerio": "^1.0.0",
     "gulp-concat": "^2.6.1",
     "gulp-connect": "^5.7.0",
@@ -51,7 +53,7 @@
     "gulp-res-version": "^0.2.0",
     "gulp-sass": "^4.1.0",
     "gulp-sourcemaps": "^3.0.0",
-    "gulp-uglify": "^3.0.2",
+    "gulp-typescript": "^5.0.1",
     "gulp-version-rev": "^1.0.6",
     "remapify": "^2.2.0",
     "rimraf": "^3.0.2",
@@ -60,5 +62,11 @@
     "typescript-eslint-parser": "^22.0.0",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0"
+  },
+  "dew": {
+    "serverUrl": "http://127.0.0.1:9000",
+    "appId": 1,
+    "ak": "524d513b75dd4969b2a2b19e94a74ea7",
+    "sk": "52b19f3ac207dec7e8c5405576150615734d72a7"
   }
 }
