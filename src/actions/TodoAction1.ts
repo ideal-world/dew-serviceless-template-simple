@@ -9,7 +9,7 @@ export type ItemDTO = {
 
 export const db = DewSDK.reldb.subject("todoDB")
 
-async function _() {
+async function init() {
     await db.exec(`create table if not exists todo
 (
     id bigint auto_increment primary key,
@@ -21,18 +21,20 @@ comment '任务表'`, [])
     await db.exec('insert into todo(content,create_user) values (?,?)', ['这是个示例', ''])
 }
 
+init()
+
 export async function fetchItems(): Promise<ItemDTO[]> {
     return doFetchItems()
 }
 
 async function doFetchItems(): Promise<ItemDTO[]> {
-    if (DewSDK.iam.auth.fetch() == null) {
+    if (DewSDK.iam.auth.fetch() === null) {
         return []
     }
-    if (DewSDK.iam.auth.fetch().roleInfo.some(r => r.defCode === 'APP_ADMIN')) {
+    if (DewSDK.iam.auth.fetch()?.roleInfo.some(r => r.defCode === 'APP_ADMIN')) {
         return db.exec('select * from todo', [])
     }
-    return db.exec('select * from todo where create_user = ?', [DewSDK.iam.auth.fetch().accountCode])
+    return db.exec('select * from todo where create_user = ?', [DewSDK.iam.auth.fetch()?.accountCode])
 }
 
 export async function addItem(content: string): Promise<null> {
@@ -40,6 +42,6 @@ export async function addItem(content: string): Promise<null> {
         throw '请先登录'
     }
     await DewSDK.cache.set("xxx", content)
-    return db.exec('insert into todo(content,create_user) values (?, ?)', [content, DewSDK.iam.auth.fetch().accountCode])
+    return db.exec('insert into todo(content,create_user) values (?, ?)', [content, DewSDK.iam.auth.fetch()?.accountCode])
         .then(() => null)
 }

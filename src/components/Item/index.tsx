@@ -2,36 +2,33 @@ import React, {useEffect, useState} from 'react'
 import * as TodoAction1 from "../../actions/TodoAction1";
 import {ItemDTO} from "../../actions/TodoAction1";
 import * as TodoAction2 from "../../actions/TodoAction2";
+import {AuthContext} from "../../pages/todo";
 
-type Props = {
-    loginUserId: string
-}
+const Item = () => {
 
-const Item = (props: Props) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const {state, dispatch} = React.useContext(AuthContext);
 
     const [items, setItems] = useState<ItemDTO[]>([]);
     const [content, setContent] = useState<string>('');
 
     useEffect(() => {
-        setItems([{
-            id: 0,
-            content: '测试测试测试测试',
-            createUserName: 'jzy',
-            createUserId: '1'
-        }, {
-            id: 0,
-            content: '测试测试测试测试',
-            createUserName: 'jzy',
-            createUserId: '1'
-        }])
+        loadItems()
     }, [])
 
-    function deleteItem(itemId: number): void {
-        TodoAction2.removeItem(itemId)
+    async function loadItems(): Promise<void> {
+        setItems(await TodoAction1.fetchItems())
     }
 
-    function addItem(): void {
-        TodoAction1.addItem(content)
+    async function deleteItem(itemId: number): Promise<void> {
+        await TodoAction2.removeItem(itemId)
+        await loadItems()
+    }
+
+    async function addItem(): Promise<void> {
+        await TodoAction1.addItem(content)
+        await loadItems()
     }
 
     return (
@@ -42,7 +39,7 @@ const Item = (props: Props) => {
                         <li className='item-li' key={item.id}>
                             <b className='item-li-content'>{item.content}</b>
                             <b className='item-li-info'>{item.createUserName}</b>
-                            {props.loginUserId != null && props.loginUserId == item.createUserId ?
+                            {state != null ?
                                 <button className='item-li-action'
                                         onClick={deleteItem.bind(this, item.id)}>[删除]</button>
                                 :
@@ -51,11 +48,14 @@ const Item = (props: Props) => {
                         </li>)
                 }
             </ul>
-            <div className='item-add'>
-                <input value={content} onChange={event => setContent(event.target.value)}/>
-                &nbsp;
-                <button onClick={addItem}>ADD</button>
-            </div>
+            {state != null ?
+                <div className='item-add'>
+                    <input value={content} onChange={event => setContent(event.target.value)}/>
+                    &nbsp;
+                    <button onClick={addItem}>ADD</button>
+                </div>
+                : ''
+            }
         </div>
     )
 }

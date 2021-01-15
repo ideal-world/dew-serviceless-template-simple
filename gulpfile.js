@@ -99,7 +99,7 @@ function _script() {
         .pipe(gulpif(isDev, exorcist(path.resolve(__dirname, _path.release + '/js/app.js.map')))) // 生成外部map
         .pipe(source('app.js'))
         .pipe(buffer())
-        /*.pipe(gulpif(isProd, uglify()))*/
+        .pipe(gulpif(isProd, uglify()))
         .pipe(gulpif(isProd, rename({suffix: '.min'})))
         .pipe(gulp.dest(_path.release + '/js'))
         .pipe(gulpif(isDev, connect.reload()))

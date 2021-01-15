@@ -1,9 +1,14 @@
 import React, {useState} from 'react'
 import {IdentOptInfo} from "@idealworld/sdk/dist/domain/IdentOptInfo";
 import {DewSDK} from "@idealworld/sdk";
+import {AuthContext} from "../../pages/todo";
 
 
 const User = () => {
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const { dispatch } = React.useContext(AuthContext);
 
     const [userInfo, setUserInfo] = useState<IdentOptInfo | null>(null);
     const [userName, setUserName] = useState<string>("");
@@ -12,11 +17,19 @@ const User = () => {
     async function login(): Promise<void> {
         const info = await DewSDK.iam.account.login(userName, password)
         setUserInfo(info)
+        dispatch({
+            type:'LOGIN',
+            payload: info
+        })
     }
 
     async function logout(): Promise<void> {
         await DewSDK.iam.account.logout()
         setUserInfo(null)
+        dispatch({
+            type:'LOGOUT',
+            payload: null
+        })
     }
 
     return (
