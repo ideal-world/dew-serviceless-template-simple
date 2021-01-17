@@ -1,33 +1,32 @@
 import React, {useEffect, useState} from 'react'
-import * as TodoAction1 from "../../actions/TodoAction1";
-import {ItemDTO} from "../../actions/TodoAction1";
-import * as TodoAction2 from "../../actions/TodoAction2";
+import * as TodoAction from "../../actions/TodoAction";
+import {ItemDTO} from "../../actions/TodoAction";
 import {AuthContext} from "../../pages/todo";
 
 const Item = () => {
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const {state, dispatch} = React.useContext(AuthContext);
+    const {state} = React.useContext(AuthContext);
 
     const [items, setItems] = useState<ItemDTO[]>([]);
     const [content, setContent] = useState<string>('');
 
     useEffect(() => {
         loadItems()
-    }, [])
+    }, [state])
 
     async function loadItems(): Promise<void> {
-        setItems(await TodoAction1.fetchItems())
+        const fetchItems = await TodoAction.fetchItems()
+        setItems(fetchItems)
     }
 
     async function deleteItem(itemId: number): Promise<void> {
-        await TodoAction2.removeItem(itemId)
+        await TodoAction.removeItem(itemId)
         await loadItems()
     }
 
     async function addItem(): Promise<void> {
-        await TodoAction1.addItem(content)
+        await TodoAction.addItem(content)
+        setContent('')
         await loadItems()
     }
 
@@ -39,7 +38,7 @@ const Item = () => {
                         <li className='item-li' key={item.id}>
                             <b className='item-li-content'>{item.content}</b>
                             <b className='item-li-info'>{item.createUserName}</b>
-                            {state != null ?
+                            {state.accountCode !== '' ?
                                 <button className='item-li-action'
                                         onClick={deleteItem.bind(this, item.id)}>[删除]</button>
                                 :
@@ -48,7 +47,7 @@ const Item = () => {
                         </li>)
                 }
             </ul>
-            {state != null ?
+            {state.accountCode !== '' ?
                 <div className='item-add'>
                     <input value={content} onChange={event => setContent(event.target.value)}/>
                     &nbsp;

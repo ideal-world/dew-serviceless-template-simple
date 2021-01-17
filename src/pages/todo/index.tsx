@@ -4,41 +4,45 @@ import Item from "components/Item";
 import {DewSDK} from "@idealworld/sdk";
 import {IdentOptInfo} from "@idealworld/sdk/dist/domain/IdentOptInfo";
 
-export interface IdentOptInfoAction {
+export type IdentOptInfoAction = {
     type: string
     payload: IdentOptInfo
 }
 
-export const AuthContext = React.createContext<IdentOptInfo>({
+const currentState: IdentOptInfo = {
     token: DewSDK.iam.auth.fetch()?.token ?? '',
     accountName: DewSDK.iam.auth.fetch()?.accountName ?? '',
     accountCode: DewSDK.iam.auth.fetch()?.accountCode ?? '',
     roleInfo: DewSDK.iam.auth.fetch()?.roleInfo ?? [],
     groupInfo: DewSDK.iam.auth.fetch()?.groupInfo ?? []
-});
+}
+
+const reducer = (state: IdentOptInfo = currentState, action: IdentOptInfoAction) => {
+    const {type} = action
+    console.log('reducer....'+type)
+    switch (type) {
+        case "LOGIN" : {
+            return action.payload
+        }
+        case "LOGOUT" : {
+            return action.payload
+        }
+        default:
+            throw new Error();
+    }
+}
+
+export const AuthContext = React.createContext<{
+    state: typeof currentState;
+    dispatch: (action: IdentOptInfoAction) => void;
+}>({
+    state: currentState,
+    dispatch: () => null
+})
 
 const ToDo = () => {
 
-    const [state, dispatch] = React.useReducer((prevState: IdentOptInfo, action: IdentOptInfoAction) => {
-        const {type, payload} = action
-        switch (type) {
-            case "LOGIN" : {
-                return payload
-            }
-            case "LOGOUT" : {
-                return payload
-            }
-            default: {
-                return payload
-            }
-        }
-    }, {
-        token: DewSDK.iam.auth.fetch()?.token ?? '',
-        accountName: DewSDK.iam.auth.fetch()?.accountName ?? '',
-        accountCode: DewSDK.iam.auth.fetch()?.accountCode ?? '',
-        roleInfo: DewSDK.iam.auth.fetch()?.roleInfo ?? [],
-        groupInfo: DewSDK.iam.auth.fetch()?.groupInfo ?? []
-    });
+    const [state, dispatch] = React.useReducer(reducer, currentState);
 
     return (
         <AuthContext.Provider

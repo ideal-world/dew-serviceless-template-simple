@@ -76,7 +76,7 @@ function _css() {
         .pipe(gulpif(isProd, cssmin()))
         .pipe(gulpif(isProd, rename({suffix: '.min'})))
         .pipe(gulpif(isDev, sourcemaps.write('/')))
-        .pipe(gulp.dest(_path.release + '/css'))
+        .pipe(gulp.dest(gulpif(isProd, _path.release, _path.dist) + '/css'))
         .pipe(gulpif(isDev, connect.reload()))
 }
 
@@ -96,12 +96,12 @@ function _script() {
             ]
         })
         .bundle()
-        .pipe(gulpif(isDev, exorcist(path.resolve(__dirname, _path.release + '/js/app.js.map')))) // 生成外部map
+        .pipe(gulpif(isDev, exorcist(path.resolve(__dirname, gulpif(isProd, _path.release, _path.dist) + '/js/app.js.map')))) // 生成外部map
         .pipe(source('app.js'))
         .pipe(buffer())
         .pipe(gulpif(isProd, uglify()))
         .pipe(gulpif(isProd, rename({suffix: '.min'})))
-        .pipe(gulp.dest(_path.release + '/js'))
+        .pipe(gulp.dest(gulpif(isProd, _path.release, _path.dist) + '/js'))
         .pipe(gulpif(isDev, connect.reload()))
 }
 
@@ -117,14 +117,14 @@ function _html() {
             empty: true,
             spare: true
         })))
-        .pipe(gulp.dest(_path.release))
+        .pipe(gulp.dest(gulpif(isProd, _path.release, _path.dist)))
         .pipe(gulpif(isDev, connect.reload()))
 }
 
 function _version() {
-    return gulp.src(_path.release + '/*.html')
+    return gulp.src(gulpif(isProd, _path.release, _path.dist) + '/*.html')
         .pipe(resversion({
-            rootdir: _path.release,
+            rootdir: gulpif(isProd, _path.release, _path.dist),
             ignore: [/#data$/i]
         }))
         .pipe(gulp.dest(_path.dist))
@@ -140,7 +140,7 @@ function _server() {
 
 function _watch() {
     gulp.watch(_path.html, _html)
-    gulp.watch(_path.js, _script)
+    gulp.watch(_path.js, series(_ts, _script))
     gulp.watch(_path.scss, _css)
 }
 

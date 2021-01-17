@@ -6,9 +6,7 @@ import {AuthContext} from "../../pages/todo";
 
 const User = () => {
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const { dispatch } = React.useContext(AuthContext);
+    const {dispatch} = React.useContext(AuthContext);
 
     const [userInfo, setUserInfo] = useState<IdentOptInfo | null>(null);
     const [userName, setUserName] = useState<string>("");
@@ -18,7 +16,7 @@ const User = () => {
         const info = await DewSDK.iam.account.login(userName, password)
         setUserInfo(info)
         dispatch({
-            type:'LOGIN',
+            type: 'LOGIN',
             payload: info
         })
     }
@@ -27,8 +25,14 @@ const User = () => {
         await DewSDK.iam.account.logout()
         setUserInfo(null)
         dispatch({
-            type:'LOGOUT',
-            payload: null
+            type: 'LOGOUT',
+            payload: {
+                token: '',
+                accountName: '',
+                accountCode: '',
+                roleInfo: [],
+                groupInfo: []
+            }
         })
     }
 
