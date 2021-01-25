@@ -1,4 +1,5 @@
 import {DewSDK} from "@idealworld/sdk";
+import {ResourceKind} from "@idealworld/sdk/dist/domain/Enum";
 
 export type ItemDTO = {
     id: number
@@ -7,9 +8,14 @@ export type ItemDTO = {
     createUserId: string
 }
 
+const DB_URL = "mysql://127.0.0.1:6379/test"
+const DB_USER = "test"
+const DB_PWD = "test"
+
 export const db = DewSDK.reldb.subject("todoDB")
 
 async function init() {
+    await DewSDK.iam.resource.subject.create('todoDB', ResourceKind.RELDB, "ToDo数据库", DB_URL, DB_USER, DB_PWD)
     await db.exec(`create table if not exists todo
 (
     id bigint auto_increment primary key,
