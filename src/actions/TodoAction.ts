@@ -12,7 +12,6 @@ const DB_URL = "mysql://127.0.0.1:49156/test"
 const DB_USER = "test"
 const DB_PWD = "test"
 
-console.log('................111111.....1111..')
 
 export const db = DewSDK.reldb.subject("todoDB")
 

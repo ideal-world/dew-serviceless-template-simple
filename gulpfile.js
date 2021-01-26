@@ -33,7 +33,7 @@ const _path = {
     action: './dist/actions',
     release: './release',
     main_js: './index.js',
-    js: ['./index.js', './src/**/*.tsx'],
+    js: ['./index.js','./src/**/*.ts', './src/**/*.tsx'],
     lint_js: ['./src/**/*.tsx'],
     scss: ['./src/**/*.scss'],
     html: './index.html'

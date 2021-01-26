@@ -4,6 +4,8 @@ import Item from "components/Item";
 import {DewSDK} from "@idealworld/sdk";
 import {IdentOptInfo} from "@idealworld/sdk/dist/domain/IdentOptInfo";
 
+console.log('........666...............')
+
 export type IdentOptInfoAction = {
     type: string
     payload: IdentOptInfo
