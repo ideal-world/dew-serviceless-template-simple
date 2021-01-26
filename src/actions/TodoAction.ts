@@ -1,5 +1,6 @@
 import {DewSDK} from "@idealworld/sdk";
 import {ResourceKind} from "@idealworld/sdk/dist/domain/Enum";
+import crt from "../../dew.crt";
 
 export type ItemDTO = {
     id: number
@@ -8,10 +9,11 @@ export type ItemDTO = {
     createUserId: string
 }
 
-const DB_URL = "mysql://127.0.0.1:49156/test"
-const DB_USER = "test"
-const DB_PWD = "test"
+const config = DewSDK.config(crt, process.env.NODE_ENV)
 
+const DB_URL = config.db.url
+const DB_USER = config.db.user
+const DB_PWD = config.db.pwd
 
 export const db = DewSDK.reldb.subject("todoDB")
 

@@ -56,7 +56,7 @@ function _ts() {
 }
 
 function _dewBuild() {
-    return dewBuild(_path.action)
+    return dewBuild(_path.action,NODE_ENV,isDev)
 }
 
 function _lint() {
@@ -146,6 +146,6 @@ function _watch() {
 
 module.exports = {
     build: series(_clean, _ts, _dewBuild, parallel(_script, _css, _html), _version),
-    dev: series(_clean, _ts, _lint, parallel(_script, _css, _html), _version, parallel(_server, _watch)),
+    dev: series(_clean, _ts,_dewBuild, _lint, parallel(_script, _css, _html), _version, parallel(_server, _watch)),
 }
 
