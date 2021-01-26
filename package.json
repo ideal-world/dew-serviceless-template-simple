@@ -13,7 +13,8 @@
   "dependencies": {
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    "@idealworld/sdk": "0.2.4"
   },
   "devDependencies": {
     "terser": "^5.5.1",
@@ -60,6 +61,11 @@
     "tsify": "^5.0.2",
     "typescript-eslint-parser": "^22.0.0",
     "vinyl-buffer": "^1.0.1",
-    "vinyl-source-stream": "^2.0.0"
+    "vinyl-source-stream": "^2.0.0",
+    "@idealworld/plugin-gulp": "0.2.4"
+  },
+  "dew": {
+    "serverUrl": "http://127.0.0.1:9000",
+    "appId": "ape4b94b770c1e4451bad6862524b8ac9b"
   }
 }

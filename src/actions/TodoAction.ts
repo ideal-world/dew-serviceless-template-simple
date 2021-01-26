@@ -8,9 +8,11 @@ export type ItemDTO = {
     createUserId: string
 }
 
-const DB_URL = "mysql://127.0.0.1:6379/test"
+const DB_URL = "mysql://127.0.0.1:49156/test"
 const DB_USER = "test"
 const DB_PWD = "test"
+
+console.log('................111111.....1111..')
 
 export const db = DewSDK.reldb.subject("todoDB")
 
@@ -48,7 +50,6 @@ export async function addItem(content: string): Promise<null> {
     if (DewSDK.iam.auth.fetch() == null) {
         throw '请先登录'
     }
-    await DewSDK.cache.set("xxx", content)
     return db.exec('insert into todo(content,create_user) values (?, ?)', [content, DewSDK.iam.auth.fetch()?.accountCode])
         .then(() => null)
 }

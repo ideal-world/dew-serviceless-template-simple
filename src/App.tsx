@@ -5,6 +5,7 @@ import Todo from './pages/todo/index'
 import pack from "../package.json";
 import {DewSDK} from "@idealworld/sdk";
 
+console.log('.......................')
 DewSDK.init(pack.dew.serverUrl,pack.dew.appId)
 
 render(<Todo />, document.getElementById("app"))

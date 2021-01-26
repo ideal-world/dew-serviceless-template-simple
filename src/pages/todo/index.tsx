@@ -14,7 +14,8 @@ const currentState: IdentOptInfo = {
     accountName: DewSDK.iam.auth.fetch()?.accountName ?? '',
     accountCode: DewSDK.iam.auth.fetch()?.accountCode ?? '',
     roleInfo: DewSDK.iam.auth.fetch()?.roleInfo ?? [],
-    groupInfo: DewSDK.iam.auth.fetch()?.groupInfo ?? []
+    groupInfo: DewSDK.iam.auth.fetch()?.groupInfo ?? [],
+    appCode: DewSDK.iam.auth.fetch()?.appCode ?? ''
 }
 
 const reducer = (state: IdentOptInfo = currentState, action: IdentOptInfoAction) => {
