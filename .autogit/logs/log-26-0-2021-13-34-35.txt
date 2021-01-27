@@ -1,0 +1,18 @@
+-------------------- Auto-Git Log --------------------
+		Tue Jan 26 2021 13:34:35 GMT+0800 (中国标准时间)
+------------------------------------------------------
+
+Modified files:
+* gulpfile.js
+* src/App.tsx
+* src/actions/TodoAction.ts
+
+
+Created files:
+* .autogit/logs/log-26-0-2021-12-59-19.txt
+
+
+Deleted files:
+
+
+Renamed files:

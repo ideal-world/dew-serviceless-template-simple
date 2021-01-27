@@ -5,6 +5,8 @@ import {AuthContext} from "../../pages/todo";
 
 const Item = () => {
 
+    console.log('...............2222........')
+
     const {state} = React.useContext(AuthContext);
 
     const [items, setItems] = useState<ItemDTO[]>([]);
