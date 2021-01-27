@@ -56,7 +56,7 @@ function _ts() {
 }
 
 function _dewBuild() {
-    return dewBuild(_path.action, NODE_ENV, isProd)
+    return dewBuild(_path.action, isProd)
 }
 
 function _lint() {
