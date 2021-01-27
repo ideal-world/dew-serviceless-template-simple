@@ -1,5 +1,6 @@
 import {DewSDK} from "@idealworld/sdk";
 import {ResourceKind} from "@idealworld/sdk/dist/domain/Enum";
+import crt from "../../dew.json";
 
 export type ItemDTO = {
     id: number
@@ -8,9 +9,11 @@ export type ItemDTO = {
     createUserId: string
 }
 
-const DB_URL = "mysql://127.0.0.1:6379/test"
-const DB_USER = "test"
-const DB_PWD = "test"
+const config = DewSDK.conf(crt, process.env.NODE_ENV)
+
+const DB_URL = config.db.url
+const DB_USER = config.db.user
+const DB_PWD = config.db.pwd
 
 export const db = DewSDK.reldb.subject("todoDB")
 
@@ -48,7 +51,6 @@ export async function addItem(content: string): Promise<null> {
     if (DewSDK.iam.auth.fetch() == null) {
         throw '请先登录'
     }
-    await DewSDK.cache.set("xxx", content)
     return db.exec('insert into todo(content,create_user) values (?, ?)', [content, DewSDK.iam.auth.fetch()?.accountCode])
         .then(() => null)
 }

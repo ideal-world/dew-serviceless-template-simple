@@ -1,0 +1,18 @@
+{
+  "env": {
+    "dev": {
+      "db": {
+        "url": "mysql://127.0.0.1:6379/test",
+        "user": "test",
+        "pwd": "test"
+      }
+    },
+    "prod": {
+      "db": {
+        "url": "mysql://127.0.0.1:6379/test",
+        "user": "test",
+        "pwd": "test"
+      }
+    }
+  }
+}

@@ -31,7 +31,8 @@ const User = () => {
                 accountName: '',
                 accountCode: '',
                 roleInfo: [],
-                groupInfo: []
+                groupInfo: [],
+                appCode: ''
             }
         })
     }
